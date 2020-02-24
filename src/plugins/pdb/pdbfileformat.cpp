@@ -35,6 +35,7 @@
 
 #include "pdbfileformat.h"
 
+#include<iostream>
 #include <boost/algorithm/string.hpp>
 
 #include <chemkit/atom.h>
@@ -76,8 +77,17 @@ PdbAtom::PdbAtom(const char *data)
     boost::trim(name);
 
     // coordinates
+    std::string xString, yString, zString;
+    for (int i = 0; i < 8; i++)
+    {
+        xString += data[i + 30];
+        yString += data[i + 38];
+        zString += data[i + 46];
+    }
     double x, y, z;
-    sscanf(&data[31], "%lf%lf%lf", &x, &y, &z);
+    x = std::stod(xString);
+    y = std::stod(yString);
+    z = std::stod(zString);
     position = chemkit::Point3(x, y, z);
 
     // atomic number
